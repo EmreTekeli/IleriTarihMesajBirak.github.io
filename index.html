@@ -5,26 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>İleri Tarihli Mesaj Bırak</title>
+
+    <style>
+        /* Özel animasyon için CSS kuralları */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #previewLink a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color:rgba(0, 123, 255, 0.7);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        #previewLink a:hover {
+            background-color: rgba(0, 123, 255, 0.9);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>İleri Tarihli Mesaj Bırak</h1>
-        <form id="messageForm">
+        <form id="messageForm" onsubmit="event.preventDefault(); previewMessage();">
             <label for="message">Mesajınız:</label>
             <textarea id="message" name="message" rows="4" required></textarea>
 
             <label for="date">Tarih ve Saat:</label>
             <input type="datetime-local" id="date" name="date" required>
 
-            <button type="button" onclick="previewMessage()">Ön İzle</button>
             <button type="submit">Mesajı Gönder</button>
         </form>
 
         <div id="preview" class="hidden">
-            <h2>Ön İzleme</h2>
-            <p id="previewMessage"></p>
-            <p id="previewDate"></p>
-            <p id="countdown"></p>
+            <p id="previewMessage" class="hidden"></p>
+            <p id="previewDate" class="hidden"></p>
+            <p id="countdown" class="hidden"></p>            
             <p id="previewLink"></p>
         </div>
     </div>
