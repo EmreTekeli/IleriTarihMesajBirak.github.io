@@ -72,18 +72,18 @@ a:hover {
 }
 
 #previewMessage span {
-    white-space: pre-wrap;
+    white-space: pre-wrap;  /* Değişiklik burada */
     overflow: hidden;
     display: inline-block;
 }
 
 #previewMessage span::before {
-    content: " ";
+    content: "";
     display: inline-block;
-    width: 100%;
-    white-space: pre-wrap;
+    white-space: nowrap;  /* Değişiklik burada */
     animation: typeWriter 2s steps(50) forwards;
 }
+
 
 
 
