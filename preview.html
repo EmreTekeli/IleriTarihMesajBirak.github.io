@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ön İzleme</title>
+    <!-- jsonwebtoken kütüphanesini CDN üzerinden ekleyin -->
+    <script src="https://cdn.jsdelivr.net/npm/jsonwebtoken@8.5.1"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>İleri Tarihli Mesaj Ön İzleme</h1>
+        <div id="previewMessage"></div>
+        <p id="previewDate"></p>
+        <p id="countdown"></p>
+    </div>
+
+    <script>
+        // jwt-simple benzeri decodeJWT fonksiyonunu oluşturun
+        function decodeJWT(token, key) {
+            const [encodedPayload, encodedSignature] = token.split('.');
+            const payload = JSON.parse(atob(encodedPayload));
+            const signature = atob(encodedSignature);
+
+            // Signature kontrolü yapılabilir
+            // Ancak, bu örnekte sadece payload'ı döndürüyoruz
+            return payload;
+        }
+
+        // Sayfa yüklendiğinde çalışacak kod
+        window.onload = function () {
+            // URL'den token parametresini al
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const token = urlParams.get('token');
+
+            if (token) {
+                // jwt-simple benzeri decodeJWT fonksiyonunu kullanarak JWT'yi çöz
+                const secretKey = 's3cr3tK3y'; // Güvenli bir şekilde saklanmalıdır
+                const decodedMessage = decodeJWT(token, secretKey);
+
+                // Belirtilen tarihe kadar bekleyip sonra mesajı göster
+                waitForDateAndDisplayMessage(decodedMessage);
+            } else {
+                // Token bulunamazsa hata mesajını göster
+                displayError();
+            }
+        };
+
+        // Belirtilen tarihe kadar bekleyip sonra mesajı gösteren fonksiyon
+        function waitForDateAndDisplayMessage(decodedMessage) {
+            const targetDate = new Date(decodedMessage.date);
+
+            // Belirtilen tarihe kadar geri sayım
+            const countdownInterval = setInterval(function () {
+                const now = new Date();
+                const timeDifference = targetDate - now;
+
+                // Tarihe ulaşıldığında mesajı göster
+                if (timeDifference <= 0) {
+                    clearInterval(countdownInterval); // Interval'ı temizle
+                    displayMessage(decodedMessage);
+                } else {
+                    updateCountdown(timeDifference);
+                }
+            }, 1000); // Her saniyede bir kontrol et
+        }
+
+        // JWT çözme işleminden sonra mesajı gösteren fonksiyon
+        function displayMessage(decodedMessage) {
+            const previewMessageElement = document.getElementById('previewMessage');
+            const previewDateElement = document.getElementById('previewDate');
+            const countdownElement = document.getElementById('countdown');
+
+            // Mesajı harf harf yazarak ekrana bastır
+            for (let i = 0; i < decodedMessage.message.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = decodedMessage.message[i];
+                span.style.animationDelay = `${i * 0.1}s`; // Her harfin animasyon başlatma gecikmesi
+                previewMessageElement.appendChild(span);
+            }
+
+            previewDateElement.textContent = `Tarih ve Saat: ${new Date(decodedMessage.date).toLocaleString()}`;
+            countdownElement.textContent = 'Geri sayım tamamlandı.';
+        }
+
+        // Hata mesajını gösteren fonksiyon
+        function displayError() {
+            const previewMessageElement = document.getElementById('previewMessage');
+            previewMessageElement.textContent = 'Hata: Geçerli bir ön izleme bağlantısı bulunamadı.';
+        }
+
+        // Süreyi gün, saat, dakika ve saniye olarak gösteren fonksiyon
+        function updateCountdown(timeDifference) {
+            const countdownElement = document.getElementById('countdown');
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+            countdownElement.textContent = `Geri sayım: ${days} gün, ${hours} saat, ${minutes} dakika, ${seconds} saniye`;
+        }
+    </script>
+</body>
+</html>
