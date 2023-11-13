@@ -75,7 +75,7 @@ button:hover {
 
 #previewMessage {
     overflow: hidden;
-    white-space: nowrap;
+    white-space: pre-wrap; /* Değişiklik burada */
     font-size: 1.5em;
 }
 
@@ -90,3 +90,4 @@ button:hover {
         opacity: 1;
     }
 }
+
