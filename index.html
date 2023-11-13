@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>İleri Tarihli Mesaj Bırak</title>
+</head>
+<body>
+    <div class="container">
+        <h1>İleri Tarihli Mesaj Bırak</h1>
+        <form id="messageForm">
+            <label for="message">Mesajınız:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+
+            <label for="date">Tarih ve Saat:</label>
+            <input type="datetime-local" id="date" name="date" required>
+
+            <button type="button" onclick="previewMessage()">Ön İzle</button>
+            <button type="submit">Mesajı Gönder</button>
+        </form>
+
+        <div id="preview" class="hidden">
+            <h2>Ön İzleme</h2>
+            <p id="previewMessage"></p>
+            <p id="previewDate"></p>
+            <p id="countdown"></p>
+            <p id="previewLink"></p>
+        </div>
+    </div>
+
+    <!-- jwt-simple kütüphanesini ekleyin -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-simple@0.5.6"></script>
+    <script src="script.js"></script>
+</body>
+</html>
