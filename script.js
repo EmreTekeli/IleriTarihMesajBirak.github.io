@@ -40,7 +40,7 @@ function previewMessage() {
     const link = document.createElement('a');
     link.href = previewLink;
     link.target = '_blank';
-    link.textContent = 'Ön İzleme Linki';
+    link.textContent = 'Link Ulaş';
     previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
     previewLinkElement.appendChild(link); // Yeni linki ekle
 
