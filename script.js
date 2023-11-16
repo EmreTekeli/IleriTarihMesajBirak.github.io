@@ -27,7 +27,7 @@ function previewMessage() {
     const messageData = { message, date: date.toISOString() };
     const token = encodeJWT(messageData, secretKey);
 
-    const previewLink = `${window.location.origin}/preview.html?token=${token}`;
+    const previewLink = `${window.location.origin}/MesajBirak.github.io/preview.html?token=${token}`;
 
     // Kopyalama işlevi ekle
     const tempInput = document.createElement('input');
