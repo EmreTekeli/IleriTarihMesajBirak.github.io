@@ -154,14 +154,8 @@ a:hover {
             const previewDateElement = document.getElementById('previewDate');
             const countdownElement = document.getElementById('countdown');
 
-            // Mesajı harf harf yazarak ekrana bastır
-            for (let i = 0; i < decodedMessage.message.length; i++) {
-                const span = document.createElement('span');
-                span.textContent = decodedMessage.message[i];
-                span.style.animationDelay = `${i * 0.1}s`; // Her harfin animasyon başlatma gecikmesi
-                previewMessageElement.appendChild(span);
-            }
-
+            // Mesajı ekrana bastır
+            previewMessageElement.textContent = decodedMessage.message;
             previewDateElement.textContent = `Tarih ve Saat: ${new Date(decodedMessage.date).toLocaleString()}`;
             countdownElement.textContent = 'Geri sayım tamamlandı.';
         }
