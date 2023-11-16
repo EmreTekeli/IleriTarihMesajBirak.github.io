@@ -2,6 +2,7 @@ function previewMessage() {
     const message = document.getElementById('message').value;
     const dateInput = document.getElementById('date');
     const date = new Date(dateInput.value);
+    const previewLinkElement = document.getElementById('previewLink');
 
     // Şu anki tarihi al
     const now = new Date();
@@ -12,23 +13,6 @@ function previewMessage() {
         return;
     }
 
-    const previewMessageElement = document.getElementById('previewMessage');
-    previewMessageElement.innerHTML = ''; // Mesajı temizle
-
-    // Harf harf animasyonunu başlat
-    for (let i = 0; i < Math.min(10, message.length); i++) {
-        const span = document.createElement('span');
-        span.textContent = message[i];
-        span.style.animationDelay = `${i * 0.1}s`; // Her harfin animasyon başlatma gecikmesi
-        previewMessageElement.appendChild(span);
-    }
-
-    const previewMessageText = message.length > 10 ? message.slice(0, 10) + '...' : message;
-    previewMessageElement.textContent = previewMessageText;
-
-
-    document.getElementById('previewDate').textContent = `Tarih ve Saat: ${date.toLocaleString()}`;
-
     // jwt-simple kütüphanesini kullanarak JWT oluştur
     const secretKey = 's3cr3tK3y'; // Güvenli bir şekilde saklanmalıdır
     const messageData = { message, date: date.toISOString() };
@@ -36,18 +20,26 @@ function previewMessage() {
 
     // Mesaj önizleme linkini oluştur
     const previewLink = `preview.html?token=${token}`;
-    const previewLinkElement = document.getElementById('previewLink');
     const link = document.createElement('a');
     link.href = previewLink;
     link.target = '_blank';
     link.textContent = 'Link Ulaş';
-    previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
-    previewLinkElement.appendChild(link); // Yeni linki ekle
 
+    // Uzun metinlerde link butonunu göster
+    if (message.length > 10) {
+        previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
+        previewLinkElement.appendChild(link); // Yeni linki ekle
+    } else {
+        previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
+    }
+
+    // Tarih ve zamanı göster
+    document.getElementById('previewDate').textContent = `Tarih ve Saat: ${date.toLocaleString()}`;
 
     // Sayacı güncelle
     updateCountdown(date);
 
+    // Önizleme alanını göster
     document.getElementById('preview').classList.remove('hidden');
 }
 
