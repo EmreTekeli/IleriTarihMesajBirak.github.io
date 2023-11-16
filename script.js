@@ -43,13 +43,8 @@ function previewMessage() {
     link.target = '_blank';
     link.textContent = 'Link Ulaş';
 
-    // Uzun metinlerde link butonunu göster
-    if (message.length > 10) {
-        previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
-        previewLinkElement.appendChild(link); // Yeni linki ekle
-    } else {
-        previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
-    }
+    previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
+    previewLinkElement.appendChild(link); // Yeni linki ekle
 
     // Sayacı güncelle
     updateCountdown(date);
