@@ -37,7 +37,12 @@ function previewMessage() {
     document.execCommand('copy');
     document.body.removeChild(tempInput);
 
-    alert('Mesajınız başarıyla gönderildi! İşte önizleme linki: ' + previewLink + '\nLink kopyalandı.');
+    // Sadece bir kez alert göster
+    const alertShown = sessionStorage.getItem('alertShown');
+    if (!alertShown) {
+        alert('Mesajınız başarıyla gönderildi!\nLink kopyalandı.');
+        sessionStorage.setItem('alertShown', 'true');
+    }
 }
 
 document.getElementById('messageForm').addEventListener('submit', function (event) {
