@@ -3,150 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message Preview</title>
+    <title>Ön İzleme</title>
+    <!-- jsonwebtoken kütüphanesini CDN üzerinden ekleyin -->
+    <script src="https://cdn.jsdelivr.net/npm/jsonwebtoken@8.5.1"></script>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        
-        h1 {
-            color: #333;
-        }
-        
-        #previewMessage {
-            font-size: 1.2em;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        
-        #previewMessage span {
-            display: inline-block;
-            opacity: 0;
-            animation: fadeIn 0.5s ease-in-out forwards;
-        }
-        
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-        
-        #previewDate, #countdown {
-            color: #777;
-            margin: 10px 0;
-        }
-        
-        a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Yeni animasyon */
-        @keyframes typeWriter {
-            from {
-                width: 0;
-            }
-            to {
-                width: 100%;
-            }
-        }
-        
-        #previewMessage span {
-            white-space: pre-wrap;  /* Değişiklik burada */
-            overflow: hidden;
-            display: inline-block;
-        }
-        
-        #previewMessage span::before {
-            content: "";
-            display: inline-block;
-            white-space: nowrap;  /* Değişiklik burada */
-            animation: typeWriter 2s steps(50) forwards;
-        }
-        
-        
-        
-        
-            </style>
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+}
+
+#previewMessage {
+    font-size: 1.2em;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+#previewMessage span {
+    display: inline-block;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+#previewDate, #countdown {
+    color: #777;
+    margin: 10px 0;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Yeni animasyon */
+@keyframes typeWriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+#previewMessage span {
+    white-space: pre-wrap;  /* Değişiklik burada */
+    overflow: hidden;
+    display: inline-block;
+}
+
+#previewMessage span::before {
+    content: "";
+    display: inline-block;
+    white-space: nowrap;  /* Değişiklik burada */
+    animation: typeWriter 2s steps(50) forwards;
+}
+
+
+
+
+    </style>
 </head>
 <body>
-    <h1>Message Preview</h1>
-    
-    <div>
-        <h2>Message Details</h2>
-        <p id="messageDetails"></p>
+    <div class="container">
+        <h1>Günü Gelince Paylaşılacak</h1>
+        <div id="previewMessage"></div>
+        <p id="previewDate"></p>
+        <p id="countdown"></p>
     </div>
 
-    <div class="countdown" id="countdown"></div>
-
     <script>
-        function decodeJWT(token) {
-            const parts = token.split('.');
-            if (parts.length !== 3) {
-                return null; // Geçersiz token
-            }
-            const decodedPayload = atob(parts[1]);
-            try {
-                return JSON.parse(decodedPayload);
-            } catch (error) {
-                return null; // Geçersiz payload
-            }
+        // jwt-simple benzeri decodeJWT fonksiyonunu oluşturun
+        function decodeJWT(token, key) {
+            const [encodedPayload, encodedSignature] = token.split('.');
+            const payload = JSON.parse(atob(encodedPayload));
+            const signature = atob(encodedSignature);
+
+            // Signature kontrolü yapılabilir
+            // Ancak, bu örnekte sadece payload'ı döndürüyoruz
+            return payload;
         }
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+        // Sayfa yüklendiğinde çalışacak kod
+        window.onload = function () {
+            // URL'den token parametresini al
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const token = urlParams.get('token');
 
-        if (token) {
-            const decodedToken = decodeJWT(token);
-            if (decodedToken && decodedToken.date) {
-                const date = new Date(decodedToken.date);
-                if (!isNaN(date.getTime())) {
-                    const message = decodedToken.message;
-                    const messageDetails = document.getElementById('messageDetails');
-                    messageDetails.textContent = `Message: ${message}, Scheduled Date: ${date}`;
+            if (token) {
+                // jwt-simple benzeri decodeJWT fonksiyonunu kullanarak JWT'yi çöz
+                const secretKey = 's3cr3tK3y'; // Güvenli bir şekilde saklanmalıdır
+                const decodedMessage = decodeJWT(token, secretKey);
 
-                    function updateCountdown(targetDate) {
-                        const countdownElement = document.getElementById('countdown');
-                        setInterval(function () {
-                            const now = new Date();
-                            const timeDifference = targetDate - now;
-
-                            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-                            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-                            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-                            countdownElement.textContent = `Countdown: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
-                        }, 1000);
-                    }
-
-                    updateCountdown(date);
-                } else {
-                    document.getElementById('messageDetails').textContent = 'Invalid Date';
-                }
+                // Belirtilen tarihe kadar bekleyip sonra mesajı göster
+                waitForDateAndDisplayMessage(decodedMessage);
             } else {
-                document.getElementById('messageDetails').textContent = 'Invalid Token';
+                // Token bulunamazsa hata mesajını göster
+                displayError();
             }
-        } else {
-            document.getElementById('messageDetails').textContent = 'Token Not Found';
+        };
+
+        // Belirtilen tarihe kadar bekleyip sonra mesajı gösteren fonksiyon
+        function waitForDateAndDisplayMessage(decodedMessage) {
+            const targetDate = new Date(decodedMessage.date);
+
+            // Belirtilen tarihe kadar geri sayım
+            const countdownInterval = setInterval(function () {
+                const now = new Date();
+                const timeDifference = targetDate - now;
+
+                // Tarihe ulaşıldığında mesajı göster
+                if (timeDifference <= 0) {
+                    clearInterval(countdownInterval); // Interval'ı temizle
+                    displayMessage(decodedMessage);
+                } else {
+                    updateCountdown(timeDifference);
+                }
+            }, 1000); // Her saniyede bir kontrol et
+        }
+
+        // JWT çözme işleminden sonra mesajı gösteren fonksiyon
+        function displayMessage(decodedMessage) {
+            const previewMessageElement = document.getElementById('previewMessage');
+            const previewDateElement = document.getElementById('previewDate');
+            const countdownElement = document.getElementById('countdown');
+
+            // Mesajı harf harf yazarak ekrana bastır
+            for (let i = 0; i < decodedMessage.message.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = decodedMessage.message[i];
+                span.style.animationDelay = `${i * 0.1}s`; // Her harfin animasyon başlatma gecikmesi
+                previewMessageElement.appendChild(span);
+            }
+
+            previewDateElement.textContent = `Tarih ve Saat: ${new Date(decodedMessage.date).toLocaleString()}`;
+            countdownElement.textContent = 'Geri sayım tamamlandı.';
+        }
+
+        // Hata mesajını gösteren fonksiyon
+        function displayError() {
+            const previewMessageElement = document.getElementById('previewMessage');
+            previewMessageElement.textContent = 'Hata: Geçerli bir ön izleme bağlantısı bulunamadı.';
+        }
+
+        // Süreyi gün, saat, dakika ve saniye olarak gösteren fonksiyon
+        function updateCountdown(timeDifference) {
+            const countdownElement = document.getElementById('countdown');
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+            countdownElement.textContent = `Geri sayım: ${days} gün, ${hours} saat, ${minutes} dakika, ${seconds} saniye`;
         }
     </script>
 </body>
