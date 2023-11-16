@@ -34,7 +34,7 @@
         <h1>İleri Tarihli Mesaj Bırak</h1>
         <form id="messageForm" onsubmit="event.preventDefault(); previewMessage();">
             <label for="message">Mesajınız:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
+            <textarea id="message" name="message" rows="6" required></textarea>
 
             <label for="date">Tarih ve Saat:</label>
             <input type="datetime-local" id="date" name="date" required>
@@ -43,9 +43,9 @@
         </form>
 
         <div id="preview" class="hidden">
-            <p id="previewMessage" class="hidden"></p>
-            <p id="previewDate" class="hidden"></p>
-            <p id="countdown" class="hidden"></p>            
+            <p id="previewMessage"></p>
+            <p id="previewDate"></p>
+            <p id="countdown"></p>            
             <p id="previewLink"></p>
         </div>
     </div>
