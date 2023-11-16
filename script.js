@@ -16,12 +16,16 @@ function previewMessage() {
     previewMessageElement.innerHTML = ''; // Mesajı temizle
 
     // Harf harf animasyonunu başlat
-    for (let i = 0; i < message.length; i++) {
+    for (let i = 0; i < Math.min(10, message.length); i++) {
         const span = document.createElement('span');
         span.textContent = message[i];
         span.style.animationDelay = `${i * 0.1}s`; // Her harfin animasyon başlatma gecikmesi
         previewMessageElement.appendChild(span);
     }
+
+    const previewMessageText = message.length > 10 ? message.slice(0, 10) + '...' : message;
+    previewMessageElement.textContent = previewMessageText;
+
 
     document.getElementById('previewDate').textContent = `Tarih ve Saat: ${date.toLocaleString()}`;
 
@@ -32,7 +36,14 @@ function previewMessage() {
 
     // Mesaj önizleme linkini oluştur
     const previewLink = `preview.html?token=${token}`;
-    document.getElementById('previewLink').innerHTML = `<a href="${previewLink}" target="_blank">Ön İzleme Linki</a>`;
+    const previewLinkElement = document.getElementById('previewLink');
+    const link = document.createElement('a');
+    link.href = previewLink;
+    link.target = '_blank';
+    link.textContent = 'Ön İzleme Linki';
+    previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
+    previewLinkElement.appendChild(link); // Yeni linki ekle
+
 
     // Sayacı güncelle
     updateCountdown(date);
