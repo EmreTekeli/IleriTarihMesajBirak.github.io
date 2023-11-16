@@ -2,6 +2,7 @@ function previewMessage() {
     const message = document.getElementById('message').value;
     const dateInput = document.getElementById('date');
     const date = new Date(dateInput.value);
+    const previewMessageElement = document.getElementById('previewMessage');
     const previewLinkElement = document.getElementById('previewLink');
 
     // Şu anki tarihi al
@@ -12,6 +13,23 @@ function previewMessage() {
         alert('Lütfen ileri bir tarih seçin.');
         return;
     }
+
+    previewMessageElement.innerHTML = ''; // Mesajı temizle
+
+    // Özetlenmiş metni oluştur
+    let previewMessageText = '';
+    for (let i = 0; i < Math.min(10, message.length); i++) {
+        const span = document.createElement('span');
+        span.textContent = message[i];
+        span.style.animationDelay = `${i * 0.1}s`; // Her harfin animasyon başlatma gecikmesi
+        previewMessageElement.appendChild(span);
+        previewMessageText += message[i]; // Özetlenmiş metni oluştur
+    }
+
+    previewMessageText = message.length > 10 ? previewMessageText + '...' : previewMessageText;
+    previewMessageElement.textContent = previewMessageText;
+
+    document.getElementById('previewDate').textContent = `Tarih ve Saat: ${date.toLocaleString()}`;
 
     // jwt-simple kütüphanesini kullanarak JWT oluştur
     const secretKey = 's3cr3tK3y'; // Güvenli bir şekilde saklanmalıdır
@@ -33,13 +51,9 @@ function previewMessage() {
         previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
     }
 
-    // Tarih ve zamanı göster
-    document.getElementById('previewDate').textContent = `Tarih ve Saat: ${date.toLocaleString()}`;
-
     // Sayacı güncelle
     updateCountdown(date);
 
-    // Önizleme alanını göster
     document.getElementById('preview').classList.remove('hidden');
 }
 
