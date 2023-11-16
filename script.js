@@ -1,3 +1,14 @@
+// Link oluşturma fonksiyonu
+function createPreviewLink(token) {
+    const previewLink = `preview.html?token=${token}`;
+    const link = document.createElement('a');
+    link.href = previewLink;
+    link.target = '_blank';
+    link.textContent = 'Link Ulaş';
+    return link;
+}
+
+// Mesaj önizleme fonksiyonu
 function previewMessage() {
     const message = document.getElementById('message').value;
     const dateInput = document.getElementById('date');
@@ -36,22 +47,18 @@ function previewMessage() {
     const messageData = { message, date: date.toISOString() };
     const token = encodeJWT(messageData, secretKey); // Geçerlilik süresi 1 saat
 
-    // Mesaj önizleme linkini oluştur
-    const previewLink = `preview.html?token=${token}`;
-    const link = document.createElement('a');
-    link.href = previewLink;
-    link.target = '_blank';
-    link.textContent = 'Link Ulaş';
-
-    previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
-    previewLinkElement.appendChild(link); // Yeni linki ekle
-
     // Sayacı güncelle
     updateCountdown(date);
 
     document.getElementById('preview').classList.remove('hidden');
+
+    // Link oluştur ve ekrana ekle
+    const link = createPreviewLink(token);
+    previewLinkElement.innerHTML = ''; // Önceki içeriği temizle
+    previewLinkElement.appendChild(link); // Yeni linki ekle
 }
 
+// Form gönderme olayı
 document.getElementById('messageForm').addEventListener('submit', function (event) {
     // Bu kısım server tarafına mesajı göndermek için kullanılır.
     // Ancak, bu örnek sadece tarayıcıda çalıştığı için server tarafına iletişim eklenmemiştir.
@@ -59,6 +66,7 @@ document.getElementById('messageForm').addEventListener('submit', function (even
     alert('Mesajınız başarıyla gönderildi!');
 });
 
+// Geri sayım güncelleme fonksiyonu
 function updateCountdown(targetDate) {
     const countdownElement = document.getElementById('countdown');
 
@@ -76,7 +84,7 @@ function updateCountdown(targetDate) {
     countdownElement.textContent = `Geri sayım: ${days} gün, ${hours} saat, ${minutes} dakika, ${seconds} saniye`;
 }
 
-// jwt-simple benzeri encodeJWT fonksiyonunu oluşturun
+// jwt-simple benzeri encodeJWT fonksiyonu
 function encodeJWT(payload, key) {
     const encoded = btoa(JSON.stringify(payload)); // Base64 kodlama
     const signature = btoa(key);
