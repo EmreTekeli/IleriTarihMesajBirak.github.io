@@ -41,3 +41,23 @@ function generateCountdownLink() {
 
   generatedLink.appendChild(shareButton);
 }
+
+// URL'den 'unique' parametresini al
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var uniqueParam = getParameterByName('unique');
+  if (uniqueParam !== null) {
+    // Burada yapılacak işlemleri gerçekleştirin
+    console.log('Benzersiz parametre: ' + uniqueParam);
+    // Eğer bir işlem yapacaksanız, buraya ekleyebilirsiniz.
+  }
+});
