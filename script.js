@@ -1,3 +1,16 @@
+// Sayfa yüklendiğinde çalışacak kısım
+window.onload = function() {
+  const generateButton = document.getElementById('generateButton');
+  generateButton.onclick = generateCountdownLink;
+
+  const nightModeButton = document.getElementById('nightModeButton');
+  nightModeButton.onclick = toggleNightMode;
+
+  // Önceki geri sayım bilgilerini temizle (her sayfa yüklendiğinde)
+  localStorage.removeItem('countdownDate');
+  localStorage.removeItem('message');
+}
+
 function generateCountdownLink() {
   const countdownDate = new Date(document.getElementById('countdownDate').value).getTime();
   const message = document.getElementById('messageInput').value;
@@ -9,7 +22,7 @@ function generateCountdownLink() {
 
   const baseURL = window.location.href.replace('index.html', ''); // Ana sayfanın URL'sini al
 
-  const link = `${baseURL}preview.html`; // Varsayılan önizleme sayfasının URL'si
+  const link = `${baseURL}preview.html?date=${countdownDate}&message=${encodedMessage}`; // Geri sayım için link
 
   const generatedLink = document.getElementById('generatedLink');
   generatedLink.innerHTML = '';
