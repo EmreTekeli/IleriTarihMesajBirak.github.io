@@ -1,3 +1,11 @@
+function generateRandomString(length) {
+  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const values = crypto.getRandomValues(new Uint8Array(length));
+  return Array.from(values)
+    .map((value) => charset[value % charset.length])
+    .join('');
+}
+
 function generateCountdownLink() {
   const countdownDate = new Date(document.getElementById('countdownDate').value).getTime();
   const message = document.getElementById('messageInput').value;
@@ -9,7 +17,7 @@ function generateCountdownLink() {
 
   const baseURL = 'https://emretekeli.github.io/MesajBirak.github.io/preview.html'; // Sabit URL
 
-  const uniqueParam = Date.now(); // Benzersiz bir zaman damgası oluştur
+  const uniqueParam = generateRandomString(8); // 8 karakter uzunluğunda benzersiz bir dize oluştur
 
   const link = `${baseURL}?unique=${uniqueParam}`; // Benzersiz parametre ile link oluştur
 
