@@ -11,16 +11,15 @@ function generateCountdownLink() {
   const message = document.getElementById('messageInput').value;
   const encodedMessage = encodeURIComponent(message);
 
+  // localStorage kullanarak mesajı sakla
+  localStorage.setItem('countdownDate', countdownDate);
+  localStorage.setItem('message', encodedMessage);
+
   const baseURL = 'https://emretekeli.github.io/MesajBirak.github.io/preview.html'; // Sabit URL
 
   const uniqueParam = generateRandomString(8); // 8 karakter uzunluğunda benzersiz bir dize oluştur
 
-  const queryParams = new URLSearchParams(window.location.search);
-  queryParams.set('countdownDate', countdownDate);
-  queryParams.set('message', encodedMessage);
-  queryParams.set('unique', uniqueParam);
-
-  const link = `${baseURL}?${queryParams.toString()}`; // URL'yi oluştur
+  const link = `${baseURL}?unique=${uniqueParam}`; // Benzersiz parametre ile link oluştur
 
   const generatedLink = document.getElementById('generatedLink');
   generatedLink.innerHTML = '';
