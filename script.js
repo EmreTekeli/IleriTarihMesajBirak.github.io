@@ -1,4 +1,3 @@
-// Sayfa yüklendiğinde çalışacak kısım
 window.onload = function() {
   const generateButton = document.getElementById('generateButton');
   generateButton.onclick = generateCountdownLink;
@@ -6,9 +5,15 @@ window.onload = function() {
   const nightModeButton = document.getElementById('nightModeButton');
   nightModeButton.onclick = toggleNightMode;
 
-  // Önceki geri sayım bilgilerini temizle (her sayfa yüklendiğinde)
-  localStorage.removeItem('countdownDate');
-  localStorage.removeItem('message');
+  // Sayfa yüklendiğinde, önceki geri sayım bilgilerini kontrol et ve varsa geri yükle
+  const urlParams = new URLSearchParams(window.location.search);
+  const countdownDateParam = urlParams.get('date');
+  const messageParam = urlParams.get('message');
+
+  if (countdownDateParam && messageParam) {
+    document.getElementById('countdownDate').value = new Date(parseInt(countdownDateParam)).toISOString().slice(0, 16);
+    document.getElementById('messageInput').value = decodeURIComponent(messageParam);
+  }
 }
 
 function generateCountdownLink() {
@@ -16,13 +21,9 @@ function generateCountdownLink() {
   const message = document.getElementById('messageInput').value;
   const encodedMessage = encodeURIComponent(message);
 
-  // localStorage kullanarak mesajı sakla
-  localStorage.setItem('countdownDate', countdownDate);
-  localStorage.setItem('message', encodedMessage);
-
   const baseURL = window.location.href.replace('index.html', ''); // Ana sayfanın URL'sini al
 
-  const link = `${baseURL}preview.html?date=${countdownDate}&message=${encodedMessage}`; // Geri sayım için link
+  const link = `${baseURL}?date=${countdownDate}&message=${encodedMessage}`; // Geri sayım için link
 
   const generatedLink = document.getElementById('generatedLink');
   generatedLink.innerHTML = '';
