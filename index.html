@@ -4,19 +4,58 @@
   <meta charset="UTF-8">
   <title>Geri Sayım Oluştur</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .night-mode {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .countdown {
+  position: relative;
+}
+
+#nightModeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+  </style>
 </head>
 <body>
 
-<div class="countdown">
-  <h1>Geri Sayım Zamanlayıcısı</h1>
-  <label for="countdownDate">Geri Sayım Tarihi:</label>
-  <input type="datetime-local" id="countdownDate">
-  <textarea id="messageInput" placeholder="Mesajınızı buraya yazın..."></textarea>
-  <button onclick="generateCountdownLink()">Paylaş</button>
-  <div id="generatedLink"></div>
-  <div id="copyAlert" style="display: none;">Link kopyalandı!</div>
-</div>
+  <div class="countdown">
+    <h1>Geri Sayım Zamanlayıcısı</h1>
+    <label for="countdownDate">Geri Sayım Tarihi:</label>
+    <input type="datetime-local" id="countdownDate">
+    <textarea id="messageInput" placeholder="Mesajınızı buraya yazın..."></textarea>
+    <button onclick="toggleNightMode()" id="nightModeButton">
+      <i class="fas fa-moon"></i>
+    </button>
+    <button onclick="generateCountdownLink()">Paylaş</button>
+    <div id="generatedLink"></div>
+    <div id="copyAlert" style="display: none;">Link kopyalandı!</div>
+  </div>
 
 <script src="script.js"></script>
+<script>
+let nightMode = false;
+
+function toggleNightMode() {
+  const body = document.body;
+  const nightModeButton = document.getElementById('nightModeButton');
+  nightMode = !nightMode;
+
+  if (nightMode) {
+    body.classList.add('night-mode');
+    nightModeButton.innerHTML = '<i class="fas fa-sun"></i>';
+  } else {
+    body.classList.remove('night-mode');
+    nightModeButton.innerHTML = '<i class="fas fa-moon"></i>';
+  }
+}
+
+</script>
 </body>
 </html>
