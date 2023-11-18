@@ -3,9 +3,13 @@ function generateCountdownLink() {
   const message = document.getElementById('messageInput').value;
   const encodedMessage = encodeURIComponent(message);
 
+  // localStorage kullanarak mesajı sakla
+  localStorage.setItem('countdownDate', countdownDate);
+  localStorage.setItem('message', encodedMessage);
+
   const baseURL = window.location.href.replace('index.html', ''); // Ana sayfanın URL'sini al
 
-  const link = `${baseURL}preview.html?date=${countdownDate}&message=${encodedMessage}`; // Geri sayım için link
+  const link = `${baseURL}preview.html`; // Varsayılan önizleme sayfasının URL'si
 
   const generatedLink = document.getElementById('generatedLink');
   generatedLink.innerHTML = '';
