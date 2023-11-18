@@ -4,6 +4,42 @@
   <meta charset="UTF-8">
   <title>Geri Sayım Önizleme</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* CSS stilleri */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .countdown {
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #timer {
+      font-size: 24px;
+      margin: 20px 0;
+    }
+
+    #message {
+      color: #000000;
+      font-style: italic;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 
@@ -13,32 +49,43 @@
   <div id="message" style="display: none;"></div>
 </div>
 
-<script src="script.js"></script>
 <script>
+  function typeWriter(text, element, speed) {
+    let i = 0;
+    const typing = setInterval(function() {
+      element.innerHTML += text.charAt(i);
+      i++;
+      if (i > text.length) {
+        clearInterval(typing);
+      }
+    }, speed);
+  }
+
   function startCountdown() {
     const countdownDate = localStorage.getItem('countdownDate');
-    const message = localStorage.getItem('message');
+    const message = decodeURIComponent(localStorage.getItem('message'));
 
     const interval = setInterval(function() {
       const now = new Date().getTime();
       const distance = countdownDate - now;
-  
+
       if (distance <= 0) {
         clearInterval(interval);
         document.getElementById('timer').innerHTML = 'Süre doldu!';
-        document.getElementById('message').innerHTML = decodeURIComponent(message);
-        document.getElementById('message').style.display = 'block';
+        const messageElement = document.getElementById('message');
+        messageElement.style.display = 'block';
+        typeWriter(message, messageElement, 50); // Mesajı adım adım yazdırma
       } else {
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-  
+
         document.getElementById('timer').innerHTML = `${days} gün ${hours} saat ${minutes} dakika ${seconds} saniye`;
       }
     }, 1000);
   }
-  
+
   window.onload = function() {
     startCountdown();
   };
