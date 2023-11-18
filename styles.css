@@ -1,93 +1,63 @@
+/* Genel sayfa düzeni */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f8f8;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-}
-
-.container {
-    background-color: rgba(255, 255, 255, 0.9); /* Saydam beyaz arka plan */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100vh;
+  }
+  
+  /* Countdown bileşeni stillemesi */
+  .countdown {
     text-align: center;
-}
-
-h1 {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+  }
+  
+  h1 {
     color: #333;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-label {
-    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
     font-weight: bold;
-}
-
-textarea,
-input {
-    width: 100%;
-    padding: 10px; /* Giriş alanları boyutunu azalttık */
-    margin-top: 5px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    background-color: rgba(0, 123, 255, 0.7); /* Saydam mavi buton */
-    color: white;
+    margin-bottom: 8px;
+  }
+  
+  input[type="datetime-local"],
+  textarea {
+    width: calc(100% - 20px);
     padding: 10px;
-    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    padding: 12px 24px;
     border: none;
-    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%; /* Butonları eşit boyutta yapar */
-}
-
-button:hover {
-    background-color: rgba(0, 123, 255, 0.9);
-}
-
-.hidden {
-    display: none;
-}
-
-#preview {
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  #generatedLink {
     margin-top: 20px;
-}
-
-#countdown {
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-
-#previewMessage {
-    overflow: hidden;
-    white-space: pre-wrap; /* Değişiklik burada */
-    font-size: 1.5em;
-}
-
-#previewMessage span {
-    opacity: 0;
-    display: inline-block;
-    animation: fadeIn 0.5s ease-in-out forwards;
-}
-
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
-}
-
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  
