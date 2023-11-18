@@ -7,9 +7,11 @@ function generateCountdownLink() {
   localStorage.setItem('countdownDate', countdownDate);
   localStorage.setItem('message', encodedMessage);
 
-  const baseURL = window.location.href.replace('index.html', ''); // Ana sayfanın URL'sini al
+  const baseURL = 'https://emretekeli.github.io/MesajBirak.github.io/preview.html'; // Sabit URL
 
-  const link = `${baseURL}preview.html`; // Varsayılan önizleme sayfasının URL'si
+  const uniqueParam = Date.now(); // Benzersiz bir zaman damgası oluştur
+
+  const link = `${baseURL}?unique=${uniqueParam}`; // Benzersiz parametre ile link oluştur
 
   const generatedLink = document.getElementById('generatedLink');
   generatedLink.innerHTML = '';
