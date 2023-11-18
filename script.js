@@ -11,15 +11,16 @@ function generateCountdownLink() {
   const message = document.getElementById('messageInput').value;
   const encodedMessage = encodeURIComponent(message);
 
-  // localStorage kullanarak mesajı sakla
-  localStorage.setItem('countdownDate', countdownDate);
-  localStorage.setItem('message', encodedMessage);
-
   const baseURL = 'https://emretekeli.github.io/MesajBirak.github.io/preview.html'; // Sabit URL
 
   const uniqueParam = generateRandomString(8); // 8 karakter uzunluğunda benzersiz bir dize oluştur
 
-  const link = `${baseURL}?unique=${uniqueParam}`; // Benzersiz parametre ile link oluştur
+  const queryParams = new URLSearchParams(window.location.search);
+  queryParams.set('countdownDate', countdownDate);
+  queryParams.set('message', encodedMessage);
+  queryParams.set('unique', uniqueParam);
+
+  const link = `${baseURL}?${queryParams.toString()}`; // URL'yi oluştur
 
   const generatedLink = document.getElementById('generatedLink');
   generatedLink.innerHTML = '';
@@ -41,23 +42,3 @@ function generateCountdownLink() {
 
   generatedLink.appendChild(shareButton);
 }
-
-// URL'den 'unique' parametresini al
-function getParameterByName(name, url) {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, '\\$&');
-  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  var uniqueParam = getParameterByName('unique');
-  if (uniqueParam !== null) {
-    // Burada yapılacak işlemleri gerçekleştirin
-    console.log('Benzersiz parametre: ' + uniqueParam);
-    // Eğer bir işlem yapacaksanız, buraya ekleyebilirsiniz.
-  }
-});
