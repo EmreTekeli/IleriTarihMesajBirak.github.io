@@ -15,9 +15,10 @@
 
 <script src="script.js"></script>
 <script>
-  function startCountdown(date, message) {
-    const countdownDate = new Date(date).getTime();
-  
+  function startCountdown() {
+    const countdownDate = localStorage.getItem('countdownDate');
+    const message = localStorage.getItem('message');
+
     const interval = setInterval(function() {
       const now = new Date().getTime();
       const distance = countdownDate - now;
@@ -39,13 +40,7 @@
   }
   
   window.onload = function() {
-    const params = new URLSearchParams(window.location.search);
-    const dateParam = params.get('date');
-  
-    if (dateParam) {
-      const countdownDate = new Date(parseInt(dateParam));
-      startCountdown(countdownDate);
-    }
+    startCountdown();
   };
 </script>
 </body>
